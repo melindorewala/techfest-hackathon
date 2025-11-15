@@ -1,0 +1,299 @@
+triage_task:
+  description: >
+    You are conducting a medical consultation at City General Hospital. A patient has come to see you 
+    with the following concern: "{patient_complaint}"
+      
+    Your responsibilities:
+    1. Greet the patient warmly and professionally
+    2. Ask relevant follow-up questions using the human_input_tool to gather complete medical history such as:
+        - Duration and severity of symptoms
+        - Any triggering factors
+        - Previous medical history
+        - Current medications
+        - Any other relevant symptoms
+    3. Based on the information gathered, decide if:
+        - You can provide initial guidance and treatment recommendations and end the consultation, OR
+        - The patient needs a specialist consultation (delegate to cardiologist for heart issues, 
+          neurologist for neurological symptoms, or orthopedist for bone/joint issues)
+    
+    Maintain a professional, empathetic tone throughout. This is a real hospital consultation.
+
+  expected_output: >
+    # Triage Decision
+    **Referral to:** [CARDIOLOGY / DENTISTRY / OB‑GYN / OPHTHALMOLOGY / ORTHOPAEDICS]
+    **Reasoning:** [Clinical rationale for specialist selection]
+    **Relevant Symptoms:** [Key symptoms that guided decision]
+    **Urgency Level:** [ROUTINE / URGENT / EMERGENCY] 
+    
+  agent: general_practitioner 
+
+cardiology_diagnosis_task:
+  description: >
+    You are Dr. James Mitchell, a cardiology specialist at City General Hospital. 
+    History: {patient_history} | Exam: {physical_exam}
+    Cardiac Tests: ECG {ecg_findings}, Echo {echo_findings}, Labs {lab_results}, Other {other_tests}
+    
+    Prepare your initial diagnosis. Give 3 differential diagnoses (ordered) with: name, rationale, certainty %, supporting/contradicting evidence.
+    State most probable diagnosis, confidence, confirmatory tests, red flags.
+    
+    NOTE: Your colleague Dr. Sarah Anderson will review your diagnosis and may ask questions or provide feedback. 
+    Be prepared to discuss your reasoning and refine your diagnosis based on collaborative input.
+    
+  expected_output: >
+    Three differential diagnoses with reasoning and evidence.
+    Most probable diagnosis with justification, confidence, tests, and red flags.
+    
+  agent: diagnosing_cardiologist
+  context:
+    - triage_task
+
+cardiology_peer_review_task:
+  description: >
+    You are Dr. Sarah Anderson, reviewing the diagnosis prepared by your colleague Dr. James Mitchell. 
+    This is a collaborative peer review session at City General Hospital - you should engage in discussion, not just passive review.
+    
+    Review the cardiology diagnosis for consistency, evidence use, reasoning, test appropriateness, and red flags.
+    
+    IMPORTANT: Engage in a hospital-style consultation with Dr. Mitchell:
+    1. Ask clarifying questions about their reasoning (e.g., "Can you explain why you prioritized diagnosis X over Y?")
+    2. Challenge assumptions if needed (e.g., "Have you considered alternative interpretation of the ECG findings?")
+    3. Request additional information if something is unclear
+    4. Provide constructive feedback and discuss alternative perspectives
+    5. Use the consult_colleague tool to ask questions or raise concerns
+    
+    After your discussion, provide a PASS/FAIL evaluation with:
+    - Strengths of the diagnosis
+    - Gaps or concerns identified
+    - Recommendations for improvement
+    - Referral decision if needed
+    - Summary of your discussion with Dr. Mitchell
+    
+  expected_output: >
+    A collaborative peer review that includes:
+    - Questions asked and discussion points raised with Dr. Mitchell
+    - PASS or FAIL evaluation
+    - Clinical assessment with strengths and gaps
+    - Recommendations and referral decision if needed
+    - Summary of the collaborative discussion
+    
+  agent: peer_review_cardiologist
+  context:
+    - cardiology_diagnosis_task
+
+dentistry_diagnosis_task:
+  description: >
+    You are Dr. Maria Rodriguez, a dental specialist at City General Hospital.
+    Patient: {patient_name}, {age}, {gender}
+    Dental History: {dental_history} | Oral Exam: {oral_exam}
+    Imaging: X-rays {xray_findings}, Photos {photo_findings}, Perio Chart {perio_findings}, Other {other_dental_tests}
+    
+    Prepare your initial diagnosis. Give 3 differential diagnoses (ordered) with: name, rationale, certainty %, supporting/contradicting evidence.
+    State most probable diagnosis, confidence, confirmatory tests, red flags.
+    
+    NOTE: Your colleague Dr. Robert Chen will review your diagnosis and may ask questions or provide feedback. 
+    Be prepared to discuss your reasoning and refine your diagnosis based on collaborative input.
+    
+  expected_output: >
+    Three differential diagnoses with reasoning and evidence.
+    Most probable diagnosis with justification, confidence, tests, and red flags.
+    
+  agent: diagnosing_dentist
+  context:
+    - triage_task
+
+dentistry_peer_review_task:
+  description: >
+    You are Dr. Robert Chen, reviewing the diagnosis prepared by your colleague Dr. Maria Rodriguez. 
+    This is a collaborative peer review session at City General Hospital - you should engage in discussion, not just passive review.
+    
+    Review the dental diagnosis for consistency, evidence use, reasoning, treatment appropriateness, and red flags.
+    
+    IMPORTANT: Engage in a hospital-style consultation with Dr. Rodriguez:
+    1. Ask clarifying questions about their reasoning
+    2. Challenge assumptions if needed
+    3. Request additional information if something is unclear
+    4. Provide constructive feedback and discuss alternative perspectives
+    5. Use the consult_colleague tool to ask questions or raise concerns
+    
+    After your discussion, provide a PASS/FAIL evaluation with:
+    - Strengths of the diagnosis
+    - Gaps or concerns identified
+    - Recommendations for improvement
+    - Referral decision if needed
+    - Summary of your discussion with Dr. Rodriguez
+    
+  expected_output: >
+    A collaborative peer review that includes:
+    - Questions asked and discussion points raised with Dr. Rodriguez
+    - PASS or FAIL evaluation
+    - Clinical assessment with strengths and gaps
+    - Recommendations and referral decision if needed
+    - Summary of the collaborative discussion
+    
+  agent: peer_review_dentist
+  context:
+    - dentistry_diagnosis_task
+
+obgyn_diagnosis_task:
+  description: >
+    You are Dr. Emily Thompson, performing a comprehensive obstetric/gynecologic assessment for {patient} at City General Hospital.
+    Integrate presenting complaint, past medical and obstetric/gynecologic history, medications/allergies,
+    vital signs, physical and pelvic exam findings, imaging and lab results, fetal monitoring (if applicable),
+    and relevant social/contextual factors. Assume the current year is {current_year}.
+    
+    NOTE: Your colleague Dr. Michael Park will review your assessment and may ask questions or provide feedback. 
+    Be prepared to discuss your reasoning and refine your assessment based on collaborative input.
+  expected_output: >
+    A structured clinical assessment containing:
+      One-line clinical summary (concise problem list)
+      Top 3 differential diagnoses ordered by likelihood, each with 2–3 supporting facts and key uncertainties
+      Recommended immediate investigations (with purpose and urgency) and any contraindications
+      Initial stabilization steps (if applicable) and time-critical interventions
+      Definitive management plan (medical, surgical, monitoring), with rationale tied to guidelines and risks/benefits
+      Monitoring plan and escalation triggers (what to watch and thresholds for calling senior/ICU/OR)
+      Patient counseling points and informed-consent considerations
+      Suggested documentation checklist entries (ICD/OPCS codes optional), and recommended communication for handoff
+    Format the output as YAML or markdown-styled sections. Avoid patient-identifying free text; use the {patient} placeholder.
+
+  agent: diagnosing_obgyn
+  context:
+    - triage_task
+
+obgyn_peer_review_task:
+  description: >
+    You are Dr. Michael Park, reviewing the assessment produced by your colleague Dr. Emily Thompson for {patient}. 
+    This is a collaborative peer review session at City General Hospital - you should engage in discussion, not just passive review.
+    
+    Evaluate diagnostic logic, safety, guideline concordance, and completeness. Identify omissions, risks, and opportunities to improve clarity or care.
+    
+    IMPORTANT: Engage in a hospital-style consultation with Dr. Thompson:
+    1. Ask clarifying questions about their reasoning and management decisions
+    2. Challenge assumptions if needed, especially regarding safety concerns
+    3. Request additional information if something is unclear
+    4. Provide constructive feedback and discuss alternative perspectives
+    5. Use the consult_colleague tool to ask questions or raise concerns
+    
+    After your discussion, provide your peer-review report.
+  expected_output: >
+    A collaborative peer-review report that includes:
+      - Questions asked and discussion points raised with Dr. Thompson
+      Overall concordance statement (agree / partially agree / disagree) with brief justification
+      For each of the primary report's top 3 diagnoses: concur or revise (provide alternative diagnosis if revising), and provide up to 3 concise reasons for the change
+      List of missed or insufficiently addressed issues (eg. red flags, contraindications, alternative tests)
+      Specific recommended edits to the management plan (prioritized: urgent, recommended, optional), each with rationale
+      Explicit safety concerns and escalation recommendations (who to involve and when)
+      Suggested wording edits for critical documentation and patient communication to reduce medico-legal risk
+      Summary of the collaborative discussion
+    Output must be concise, prioritized, and cite guideline references where relevant.
+  
+  agent: peer_review_obgyn
+  context:
+    - obgyn_diagnosis_task
+
+ophthalmology_diagnosis_task:
+  description: >
+    You are Dr. Lisa Wang, an ophthalmology specialist at City General Hospital.
+    Patient: {patient_name}, {age}, {gender}
+    History: {patient_history} | Exam: {physical_exam}
+    Tests: VA {visual_acuity}, IOP/Togonometry {iop_measurements}, Visual Field {vf_results}, Slit-Lamp {slitlamp_findings}, Labs {lab_results}, ImagingandOther {imaging_and_other_tests}
+    
+    Prepare your initial diagnosis. Give 3 differential diagnoses (ordered) with: name, rationale, certainty %, supporting/contradicting evidence.
+    State most probable diagnosis, confidence, confirmatory tests, red flags.
+    
+    NOTE: Your colleague Dr. David Kim will review your diagnosis and may ask questions or provide feedback. 
+    Be prepared to discuss your reasoning and refine your diagnosis based on collaborative input.
+    
+  expected_output: >
+    Three differential diagnoses with reasoning and evidence.
+    Most probable diagnosis with justification, confidence, tests, and red flags.
+    
+  agent: diagnosing_ophthalmologist
+  context:
+    - triage_task
+
+ophthalmology_peer_review_task:
+  description: >
+    You are Dr. David Kim, reviewing the diagnosis prepared by your colleague Dr. Lisa Wang. 
+    This is a collaborative peer review session at City General Hospital - you should engage in discussion, not just passive review.
+    
+    Review the diagnosis for consistency, evidence use, reasoning, test appropriateness, and red flags.
+    
+    IMPORTANT: Engage in a hospital-style consultation with Dr. Wang:
+    1. Ask clarifying questions about their reasoning
+    2. Challenge assumptions if needed
+    3. Request additional information if something is unclear
+    4. Provide constructive feedback and discuss alternative perspectives
+    5. Use the consult_colleague tool to ask questions or raise concerns
+    
+    After your discussion, provide a PASS/FAIL evaluation with:
+    - Strengths of the diagnosis
+    - Gaps or concerns identified
+    - Recommendations for improvement
+    - Referral decision if needed
+    - Summary of your discussion with Dr. Wang
+    
+  expected_output: >
+    A collaborative peer review that includes:
+    - Questions asked and discussion points raised with Dr. Wang
+    - PASS or FAIL evaluation
+    - Clinical assessment with strengths and gaps
+    - Recommendations and referral decision if needed
+    - Summary of the collaborative discussion
+    
+  agent: peer_review_ophthalmologist
+  context:
+    - ophthalmology_diagnosis_task
+
+orthopaedic_diagnosis_task:
+  description: >
+    You are Dr. John Martinez, an orthopaedic specialist at City General Hospital.
+    {patient information}
+    
+    Prepare your initial diagnosis. Give 3 differential diagnoses (ordered) with: name, rationale, certainty %, supporting/contradicting evidence.
+    State most probable diagnosis, confidence, confirmatory tests, red flags.
+    
+    NOTE: Your colleague Dr. Patricia O'Brien will review your diagnosis and may ask questions or provide feedback. 
+    Be prepared to discuss your reasoning and refine your diagnosis based on collaborative input.
+    
+  expected_output: >
+    Three differential diagnoses with reasoning and evidence.
+    Most probable diagnosis with justification, confidence, tests, and red flags.
+    
+  agent: diagnosing_orthopaedic
+  context:
+    - triage_task
+
+orthopaedic_peer_review_task:
+  description: >
+    You are Dr. Patricia O'Brien, reviewing the diagnosis prepared by your colleague Dr. John Martinez. 
+    This is a collaborative peer review session at City General Hospital - you should engage in discussion, not just passive review.
+    
+    Review the diagnosis for consistency, evidence use, reasoning, test appropriateness, and red flags.
+    
+    IMPORTANT: Engage in a hospital-style consultation with Dr. Martinez:
+    1. Ask clarifying questions about their reasoning
+    2. Challenge assumptions if needed
+    3. Request additional information if something is unclear
+    4. Provide constructive feedback and discuss alternative perspectives
+    5. Use the consult_colleague tool to ask questions or raise concerns
+    
+    After your discussion, provide a PASS/FAIL evaluation with:
+    - Strengths of the diagnosis
+    - Gaps or concerns identified
+    - Recommendations for improvement
+    - Referral decision if needed
+    - Summary of your discussion with Dr. Martinez
+    
+  expected_output: >
+    A collaborative peer review that includes:
+    - Questions asked and discussion points raised with Dr. Martinez
+    - PASS or FAIL evaluation
+    - Clinical assessment with strengths and gaps
+    - Recommendations and referral decision if needed
+    - Summary of the collaborative discussion
+    
+  agent: peer_review_orthopaedic
+  context:
+    - orthopaedic_diagnosis_task
+
+
