@@ -1,0 +1,7 @@
+Three differential diagnoses with reasoning and evidence: 
+1. Fracture of the femur or tibia: The patient's mechanism of injury, symptoms, and history of diabetes support this diagnosis. The patient's severe leg pain, swelling, bruising, and difficulty walking are consistent with a fracture. Certainty: 80%. Supporting evidence: the patient's symptoms and mechanism of injury. Contradicting evidence: none. 
+2. Ligament sprain: The patient's twisted leg during the fall could have caused a ligament sprain. The patient's symptoms, including pain, swelling, and bruising, are consistent with a ligament sprain. Certainty: 15%. Supporting evidence: the patient's mechanism of injury. Contradicting evidence: the patient's severe pain and difficulty walking, which may suggest a more serious injury. 
+3. Cellulitis or infection: The patient's fever and history of diabetes increase the risk of infection. The patient's symptoms, including redness, swelling, and warmth of the skin, could be consistent with cellulitis or another type of infection. Certainty: 5%. Supporting evidence: the patient's fever and history of diabetes. Contradicting evidence: the patient's mechanism of injury and symptoms, which are more consistent with a fracture or ligament sprain. 
+Most probable diagnosis: Fracture of the femur or tibia, with a confidence level of 80%. 
+Confirmatory tests: X-ray or MRI. 
+Red flags: severe pain, difficulty walking, and fever.

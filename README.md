@@ -1,54 +1,165 @@
-# Helloworld2 Crew
+# Clyra - AI Medical Consultation Platform
 
-Welcome to the Helloworld2 Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+A premium healthcare landing page for Clyra, a revolutionary AI-powered medical consultation platform that uses multi-agent collaboration to provide trusted second opinions.
 
-## Installation
+## 🏥 About Clyra
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+Clyra uses SEAL (Simulacrum-Based Evolutionary Agent Learning) - a breakthrough multi-agent AI system that simulates real medical consultations. Instead of a single AI giving potentially alarming diagnoses, Clyra creates a virtual team of AI medical specialists who debate, collaborate, and reach consensus - just like real doctors discussing a case.
 
-First, if you haven't already, install uv:
+### Key Features
+
+- **Multi-Agent AI Collaboration**: Multiple AI specialists work together on each case
+- **Transparent Reasoning**: See exactly how AI doctors debate and reach consensus  
+- **Medical-Grade Security**: HIPAA compliant with end-to-end encryption
+- **Anxiety-Reducing**: Balanced, thoughtful guidance instead of scary single diagnoses
+- **24/7 Availability**: Professional medical consultation anytime you need it
+
+## 🚀 Technology Stack
+
+- **Next.js 14+** with App Router and TypeScript
+- **Tailwind CSS v4** with medical-grade design system
+- **Framer Motion** for smooth, calming animations
+- **Lucide React** for clean, medical-appropriate icons
+- **Inter Font** optimized for medical readability
+
+## 🎨 Design Philosophy
+
+- **Apple-level minimalism**: Ultra-clean, restraint-driven design
+- **Mayo Clinic trust**: Medical-grade clarity and credibility  
+- **Headspace calmness**: Soothing, anxiety-reducing color palette
+- **Premium feel**: This is NOT another symptom checker
+
+### Color System
+
+- **Primary Medical Blue**: `#2563EB` - Trust and professionalism
+- **Trust Slate**: `#64748B` - Readable secondary text
+- **Calming Background**: `#F1F5F9` - Reduces anxiety
+- **Success Accent**: `#10B981` - Positive outcomes
+- **Critical Information**: `#DC2626` - Important warnings
+
+## 📱 Responsive Design
+
+- **Mobile-first approach** with thumb-zone optimization
+- **Touch-friendly** interactive elements
+- **Progressive enhancement** from mobile to desktop
+- **Accessibility-first** with WCAG 2.2 AA compliance
+
+## ⚡ Performance Features
+
+- **Core Web Vitals optimized** - LCP <2.5s, FID <100ms, CLS <0.1
+- **Image optimization** with WebP/AVIF formats
+- **Code splitting** and lazy loading
+- **SEO optimized** with complete meta tags and structured data
+
+## 🚀 Quick Start
 
 ```bash
-pip install uv
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Next, navigate to your project directory and install the dependencies:
+Open [http://localhost:3000](http://localhost:3000) to view the landing page.
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
+## 📁 Project Structure
+
 ```
-### Customizing
-
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/helloworld2/config/agents.yaml` to define your agents
-- Modify `src/helloworld2/config/tasks.yaml` to define your tasks
-- Modify `src/helloworld2/crew.py` to add your own logic, tools and specific args
-- Modify `src/helloworld2/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
-
-```bash
-$ crewai run
+clyra/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── layout.tsx         # Global layout with SEO
+│   │   ├── page.tsx           # Main landing page
+│   │   └── globals.css        # Medical design system
+│   ├── components/             # React components
+│   │   ├── ui/                # Base UI components
+│   │   ├── HeroSection.tsx    # Hero with medical positioning
+│   │   ├── ProblemSolution.tsx # AI comparison section
+│   │   ├── HowItWorks.tsx     # 3-step process
+│   │   ├── TrustSection.tsx   # Credibility & testimonials
+│   │   ├── PricingSection.tsx # Healthcare value pricing
+│   │   └── FinalCTA.tsx       # Conversion section
+│   ├── lib/
+│   │   └── utils.ts           # Utility functions
+│   └── types/
+│       └── index.ts           # TypeScript interfaces
+├── public/                    # Static assets
+├── tailwind.config.ts         # Medical design system
+└── next.config.ts             # Performance optimization
 ```
 
-This command initializes the helloworld2 Crew, assembling the agents and assigning them tasks as defined in your configuration.
+## 🎯 Key Components
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+### HeroSection
+- Medical positioning with trust indicators
+- Animated AI collaboration visualization
+- Clear value proposition and CTAs
 
-## Understanding Your Crew
+### ProblemSolution  
+- Comparison table: Traditional AI vs Real Doctors vs Clyra
+- Interactive AI collaboration preview
+- Trust-building through transparency
 
-The helloworld2 Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+### HowItWorks
+- 3-step process with interactive demos
+- Expandable details for each step
+- Mobile-optimized timeline design
 
-## Support
+### TrustSection
+- Medical accuracy statistics with animated counters
+- Live AI reasoning preview with toggle
+- Professional testimonials and validation
 
-For support, questions, or feedback regarding the Helloworld2 Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+### PricingSection
+- Healthcare-focused pricing strategy
+- Cost comparison with traditional options
+- FAQ section addressing medical concerns
 
-Let's create wonders together with the power and simplicity of crewAI.
+### FinalCTA
+- Strong conversion messaging
+- Multiple trust indicators
+- Social proof and guarantees
+
+## 📊 Analytics & Monitoring
+
+The landing page is set up for:
+- **Google Analytics 4** integration
+- **Core Web Vitals** monitoring
+- **Conversion tracking** for consultations
+- **A/B testing** framework ready
+
+## 📈 SEO Features
+
+- Complete meta tags and Open Graph
+- Structured data for healthcare platforms
+- Semantic HTML for screen readers  
+- Medical content optimization
+- Sitemap and robots.txt included
+
+## 🌐 Browser Support
+
+- **Modern browsers** (Chrome 90+, Firefox 88+, Safari 14+)
+- **Mobile optimization** for iOS Safari and Chrome
+- **Progressive enhancement** for older browsers
+- **Accessibility support** across all platforms
+
+## 🚀 Deployment
+
+The easiest way to deploy is using [Vercel](https://vercel.com):
+
+1. Connect your GitHub repository
+2. Configure environment variables
+3. Deploy with automatic HTTPS and CDN
+
+For healthcare compliance, consider enterprise hosting with HIPAA compliance.
+
+---
+
+**Built with ❤️ for better healthcare access through AI collaboration**

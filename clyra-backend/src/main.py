@@ -115,7 +115,7 @@ def run():
     # }
 
     inputs =  {
-        'patient_complaint':'i have a cold'
+        'patient_complaint':'I think I broke my leg'
     }
 
     try:
